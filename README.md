@@ -1,2 +1,2 @@
-# WorkshipController2020
+# WorkshopController2020
 Heating control - multi Arduino based
