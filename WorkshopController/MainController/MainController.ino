@@ -342,7 +342,7 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
     Serial.println(pipeTemperature);
 #endif
 
-    if (averagedAmbTemp > i2c_ambTempTh + 4) {
+    if (averagedAmbTemp > i2c_ambTempTh + 1) {
       digitalWrite(PUMP_RELAY_EN, HIGH);
       digitalWrite(FAN_RELAY_EN, HIGH);
       digitalWrite(AMB_RELAY_EN, HIGH);
