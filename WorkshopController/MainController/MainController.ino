@@ -105,6 +105,7 @@ RTCDateTime EndTime;
 int upTime;
 #endif
 float averagedAmbTemp = 0;
+float averagedPipeTemp = 30;
 float dataReceived;
 
 typedef enum
@@ -227,7 +228,8 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
   SensorPositions sensorPosition = ReturnPipe;
 
   readTempC = analogRead(PIPE_ANALOG_PIN);
-  pipeTemperature = readTempC / 9.31;
+  //pipeTemperature = readTempC / 9.31;
+  pipeTemperature = approxRollingAverage(pipeTemperature, readTempC/9.31, 10);
 #ifdef RTC_CONNECTED
   Serial.print("System up since: "); Serial.println(clock.dateFormat("d F Y H:i:s", upTimeClk));
 #endif
@@ -259,7 +261,7 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 #ifdef DEBUG
   Serial.println(F("Data is not available "));
 #endif
-  if (pipeTemperature > 55) {
+  if (pipeTemperature > 58) {
     digitalWrite(PUMP_RELAY_EN, LOW);
     digitalWrite(FAN_RELAY_EN, LOW);
     digitalWrite(AMB_RELAY_EN, HIGH);
@@ -317,7 +319,8 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
         Serial.println(">Data Received = boilerOn: " + String(payload.boilerOn));
         Serial.println("------------------------------------");
 #endif
-        pipeTemperature = payload.tempC;
+        //pipeTemperature = payload.tempC;
+        
         break;
       case WorkshopAmbient:
 #ifdef DEBUG
